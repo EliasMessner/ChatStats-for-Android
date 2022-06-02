@@ -1,0 +1,38 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/general_header">
+
+        <ListPreference
+            app:entries="@array/dark_theme_entries"
+            app:entryValues="@array/dark_theme_values"
+            app:key="@string/dark_theme_settings_key"
+            app:title="Dark Theme"
+            app:defaultValue="@string/dark_theme_auto" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/parsing_header">
+
+        <SwitchPreference
+            app:title="Auto Settings"
+            app:defaultValue="true"
+            app:key="@string/auto_settings_settings_key" />
+
+        <ListPreference
+            app:entries="@array/date_pattern_pref_entries"
+            app:entryValues="@array/date_pattern_pref_values"
+            app:key="@string/date_pattern_settings_key"
+            app:summary="@string/date_pattern_settings_summary"
+            app:title="Date Format" />
+
+        <ListPreference
+            app:entries="@array/time_pattern_pref_entries"
+            app:entryValues="@array/time_pattern_pref_values"
+            app:key="@string/time_pattern_settings_key"
+            app:summary="@string/time_pattern_settings_summary"
+            app:title="Clock Format" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

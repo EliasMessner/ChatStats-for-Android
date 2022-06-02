@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings_title"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/browse_files_menu_item"
+        android:title="@string/load_file"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/enter_filepath_menu_item"
+        android:title="@string/enter_filepath"
+        app:showAsAction="never" />
+</menu>

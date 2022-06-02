@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="ExpandableTextViewHolder">
+        <attr name="maxLinesCollapsed" format="integer"/>
+        <attr name="maxLinesExpanded" format="integer"/>
+        <attr name="expanded" format="boolean"/>
+    </declare-styleable>
+</resources>

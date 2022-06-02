@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="date_pattern_pref_entries">
+        <item>@string/date_pattern_us_example</item>
+        <item>@string/date_pattern_us_day_before_month_full_year_example</item>
+        <item>@string/date_pattern_de_example</item>
+    </string-array>
+    <string-array name="date_pattern_pref_values">
+        <item>@string/date_pattern_us</item>
+        <item>@string/date_pattern_us_day_before_month_full_year</item>
+        <item>@string/date_pattern_de</item>
+    </string-array>
+
+    <string-array name="time_pattern_pref_entries">
+        <item>@string/time_pattern_us_example</item>
+        <item>@string/time_pattern_de_example</item>
+    </string-array>
+    <string-array name="time_pattern_pref_values">
+        <item>@string/time_pattern_us</item>
+        <item>@string/time_pattern_de</item>
+    </string-array>
+
+    <string-array name="dark_theme_entries">
+        <item>Automatic</item>
+        <item>On</item>
+        <item>Off</item>
+    </string-array>
+    <string-array name="dark_theme_values">
+        <item>@string/DARK_THEME_AUTO</item>
+        <item>@string/DARK_THEME_ON</item>
+        <item>@string/DARK_THEME_OFF</item>
+    </string-array>
+
+    <!-- The following two arrays define a map. First array contains the keys and the second one the values.
+     The map maps date pattern strings used for parsing date to regex lookahead patterns that are used for splitting file content into message segments.
+     A map defined here can be accessed via ValueProvider.getLinkedHashMap(...) -->
+    <string-array name="date_pattern_keys">
+        <item>@string/date_pattern_de</item>
+        <item>@string/date_pattern_us_day_before_month_full_year</item>
+        <item>@string/date_pattern_us</item>
+    </string-array>
+    <string-array name="date_look_ahead_values">
+        <item>@string/date_lookahead_de</item>
+        <item>@string/date_lookahead_us_day_before_month_full_year</item>
+        <item>@string/date_lookahead_us</item>
+    </string-array>
+
+    <!-- Another map, analogue to above but this time mapping time-patterns to time-lookahead-patterns -->
+    <string-array name="time_pattern_keys">
+        <item>@string/time_pattern_de</item>
+        <item>@string/time_pattern_us</item>
+    </string-array>
+    <string-array name="time_look_ahead_values">
+        <item>@string/time_lookahead_de</item>
+        <item>@string/time_lookahead_us</item>
+    </string-array>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+    <string name="dark_theme_auto">DARK_THEME_AUTO</string>
+    <string name="dark_theme_on">DARK_THEME_ON</string>
+    <string name="dark_theme_off">DARK_THEME_OFF</string>
+</resources>

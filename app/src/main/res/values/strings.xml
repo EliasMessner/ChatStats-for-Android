@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">ChatStats</string>
+    <string name="show_more">Show more…</string>
+    <string name="show_results">Show Results!</string>
+    <string name="show_less">Show less…</string>
+
+    <string name="date_pattern_settings_key">DATE_PATTERN_SETTINGS</string>
+    <string name="time_pattern_settings_key">TIME_PATTERN_SETTINGS</string>
+
+    <!-- US -->
+    <string name="date_lookahead_us">\\d{1,2}/\\d{1,2}/\\d{2}</string>
+    <string name="date_lookahead_us_day_before_month_full_year">\\d{1,2}/\\d{1,2}/\\d{4}</string>
+    <string name="time_lookahead_us">\\d{1,2}:\\d{2}</string>
+    <string name="date_pattern_us">M/d/yy</string>
+    <string name="time_pattern_us">h:mm a</string>
+    <string name="date_pattern_us_day_before_month_full_year">d/M/yyyy</string>
+    <string name="date_pattern_us_example">9/31/22</string>
+    <string name="time_pattern_us_example">7:13 PM</string>
+    <string name="date_pattern_us_day_before_month_full_year_example">31/9/2022</string>
+
+    <!-- DE -->
+    <string name="date_lookahead_de">\\d{2}.\\d{2}.\\d{2}</string>
+    <string name="time_lookahead_de">\\d{2}:\\d{2}</string>
+    <string name="date_pattern_de">d.M.yy</string>
+    <string name="date_pattern_de_example">31.09.22</string>
+    <string name="time_pattern_de">H:mm</string>
+    <string name="time_pattern_de_example">19:13</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="general_header">General</string>
+    <string name="parsing_header">Parsing</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="auto_settings_settings_key">AUTO_SETTINGS</string>
+    <string name="dark_theme_settings_key">DARK_THEME_SETTINGS</string>
+    <string name="DARK_THEME_AUTO">-1</string>
+    <string name="DARK_THEME_ON">2</string>
+    <string name="DARK_THEME_OFF">1</string>
+    <string name="language_settings_summary">Language of your Chat File. Depends on the language of your WhatsApp</string>
+    <string name="date_pattern_settings_summary">Date format used in your chat file to display dates</string>
+    <string name="time_pattern_settings_summary">Clock Format used in your chat file to display time</string>
+    <string name="file_not_found_message">File not found.\nWe recommend exporting the file directly from WhatsApp into ChatStats.\nAlternatively, try loading it via a different File Explorer.</string>
+    <string name="good_file_message">File looks OK!</string>
+    <string name="bad_file_message">Your File does not look OK. Please check out settings or try a different File. \nMessage: %s</string>
+    <string name="pref_set_auto_done_message">Preferences set automatically</string>
+    <string name="action_settings_title">Settings</string>
+    <string name="load_file">Browse Files</string>
+    <string name="enter_filepath">Enter Filepath</string>
+
+    <!-- Toast Messages -->
+    <string name="theme_change_after_restart_message">New Theme will be applied after restart.</string>
+
+
+</resources>
