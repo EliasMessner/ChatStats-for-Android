@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -10,32 +11,41 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/scrollViewChildrenWrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/fileOkTextView"
+            <LinearLayout
+                android:id="@+id/fileInputView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp" />
+                android:layout_margin="25dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
 
-            <com.example.chatstats2.ExpandableTextViewHolder
-                android:id="@+id/expandableTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="@integer/max_lines_collapsed"
-                app:maxLinesCollapsed="@integer/max_lines_collapsed"
-                app:maxLinesExpanded="@integer/max_lines_expanded"
-                app:expanded="false"/>
+                <TextView
+                    android:id="@+id/fileOkTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp" />
+
+                <com.example.chatstats2.ExpandableTextViewHolder
+                    android:id="@+id/expandableTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="@integer/max_lines_collapsed"
+                    app:expanded="false"
+                    app:maxLinesCollapsed="@integer/max_lines_collapsed"
+                    app:maxLinesExpanded="@integer/max_lines_expanded" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/resultSettingsView"
@@ -44,7 +54,8 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/fileInputView">
 
                 <Button
                     android:id="@+id/showResultsButton"
@@ -61,9 +72,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_margin="25dp"
                     android:visibility="gone" />
             </LinearLayout>
-
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

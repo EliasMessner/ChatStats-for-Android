@@ -2,6 +2,9 @@ package com.example.chatstats2;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.view.View;
+
+import com.github.mikephil.charting.charts.Chart;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -59,5 +62,11 @@ public abstract class Util {
     public static String clean(String text) {
         String punctuations = "\\p{Punct}";
         return text.replaceAll(punctuations, " ");
+    }
+    
+    public static int[] getLocationOnWindow(View view) {
+        int[] outLocation = new int[2];
+        view.getLocationInWindow(outLocation);
+        return outLocation;
     }
 }

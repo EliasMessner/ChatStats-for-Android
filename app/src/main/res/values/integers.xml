@@ -3,4 +3,7 @@
     <integer name="max_lines_collapsed">3</integer>
     <integer name="BROWSE_FILES_REQUEST">1</integer>
     <integer name="max_lines_expanded">500</integer>
+    <integer name="chart_title_text_size">18</integer>
+    <integer name="animation_pie_chart_duration_millis">1000</integer>
+    <integer name="animation_bar_chart_duration_millis">2000</integer>
 </resources>

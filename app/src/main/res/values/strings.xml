@@ -60,5 +60,9 @@
     <!-- Toast Messages -->
     <string name="theme_change_after_restart_message">New Theme will be applied after restart.</string>
 
+    <!-- Chart Labels -->
+    <string name="user_participation_by_messages_title">User Participation by Messages</string>
+    <string name="user_participation_by_words_title">User Participation by Words</string>
+
 
 </resources>

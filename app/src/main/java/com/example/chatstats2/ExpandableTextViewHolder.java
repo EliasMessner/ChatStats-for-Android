@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 /**
- * A LinearLayout that works similar to a TextView but enables the user to collapse or expand the
+ * A LinearLayout that contains a TextView and enables the user to collapse or expand the
  * contained text via a button.
  */
 public class ExpandableTextViewHolder extends LinearLayout {
@@ -106,43 +106,29 @@ public class ExpandableTextViewHolder extends LinearLayout {
     }
 
     protected void update() {
-        if (estimateLineCount() <= maxLinesCollapsed) {
-            showMoreButton.setVisibility(GONE);
-        } else {
-            showMoreButton.setVisibility(VISIBLE);
-        }
-        if (expanded) {
-            textView.setMaxLines(maxLinesExpanded);
-            showMoreButton.setText(R.string.show_less);
-        } else {
-            textView.setMaxLines(maxLinesCollapsed);
-            showMoreButton.setText(R.string.show_more);
-        }
-        invalidate();
-        requestLayout();
+        // For updating the view, we need the lineCount of the textView.
+        // Before textView is rendered, getLineCount() will return 0. Therefore, add a runnable to
+        // its layout queue. It will be executed after rendering.
+        textView.post(() -> {
+            int lineCount =
+                    textView.getText().toString().endsWith("\n")
+                    ? textView.getLineCount() - 1
+                    : textView.getLineCount();
+            if (lineCount <= maxLinesCollapsed) {
+                showMoreButton.setVisibility(GONE);
+            } else {
+                showMoreButton.setVisibility(VISIBLE);
+            }
+            if (expanded) {
+                textView.setMaxLines(maxLinesExpanded);
+                showMoreButton.setText(R.string.show_less);
+            } else {
+                textView.setMaxLines(maxLinesCollapsed);
+                showMoreButton.setText(R.string.show_more);
+            }
+            invalidate();
+            requestLayout();
+        });
     }
 
-    /**
-     * Helper method for estimating the line count of the TextView. Simply calling textView.getLineCount()
-     * does not work if the textView has not been rendered yet
-     */
-    protected int estimateLineCount() {
-        String text = textView.getText().toString();
-        final Rect bounds = new Rect();
-        final Paint paint = new Paint();
-        float currentTextSize = textView.getTextSize();
-        paint.setTextSize(currentTextSize);
-        paint.getTextBounds(text, 0, text.length(), bounds);
-        int width = textView.getWidth() == 0 ? estimateWidth() : textView.getWidth();
-        return (int) Math.ceil((float) bounds.width() / width);
-    }
-
-    /**
-     * Helper method for estimating the width of the TextView. Simply calling textView.getWidth()
-     * does not work if the textView has not been rendered yet
-     */
-    protected int estimateWidth() {
-        return 400;
-        // TODO figure out how to estimate width of TextView before it was rendered
-    }
 }

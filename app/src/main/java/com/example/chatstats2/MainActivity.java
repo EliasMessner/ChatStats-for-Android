@@ -3,6 +3,7 @@ package com.example.chatstats2;
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 import static com.example.chatstats2.Util.getFileContentAsString;
+import static com.example.chatstats2.Util.getLocationOnWindow;
 import static com.example.chatstats2.Util.getTextFromContentProviderUri;
 import static com.example.chatstats2.Util.stackTraceAsString;
 
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,18 +34,28 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.PieChart;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     String filePath;
     ActivityResultLauncher<Intent> activityResultLauncher;
     SettingsHandler settingsHandler;
+    ChartProvider chartProvider;
+    List<Chart<?>> chartsYetToBeAnimated;
 
     // GUI Elements
+    View activityRootView;
     NestedScrollView scrollView;
     TextView fileOkTextView;
     ExpandableTextViewHolder expandableTextView;
@@ -68,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         initializeGuiComponents();
         settingsHandler = new SettingsHandler(this);
+        chartProvider = new ChartProvider(this);
+        chartsYetToBeAnimated = new ArrayList<>();
+        findViewById(R.id.mainLayout).getViewTreeObserver().addOnGlobalLayoutListener(this::onGlobalLayoutChange);
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
@@ -76,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initializeGuiComponents() {
+        activityRootView = findViewById(R.id.mainLayout);
         scrollView = findViewById(R.id.scrollView);
         fileOkTextView = findViewById(R.id.fileOkTextView);
         expandableTextView = findViewById(R.id.expandableTextView);
@@ -122,6 +139,26 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Animate a chart when it appears on the screen for the first time.
+     */
+    private void onGlobalLayoutChange() {
+        for (int i = 0; i < resultsView.getChildCount(); i++) {
+            View child = resultsView.getChildAt(i);
+            if (child instanceof Chart<?> && chartsYetToBeAnimated.contains((Chart<?>) child)) {
+                Chart<?> chart = (Chart<?>) child;
+                if (getLocationOnWindow(chart)[1] > activityRootView.getHeight()) continue;
+                chartsYetToBeAnimated.remove(chart);
+                if (chart instanceof PieChart) {
+                    ((PieChart) chart).spin( getResources().getInteger(R.integer.animation_pie_chart_duration_millis),0,-360f, Easing.EaseInOutQuad);
+                } else if (chart instanceof BarChart) {
+                    chart.animateY(R.integer.animation_bar_chart_duration_millis);
+                }
+
+            }
+        }
+    }
+
     private void browseFiles() {
         Intent chooseFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFileIntent.setType("*/*");
@@ -129,9 +166,49 @@ public class MainActivity extends AppCompatActivity {
         activityResultLauncher.launch(chooseFileIntent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void onClickShowResults() {
+        resultsView.removeAllViews();
         resultsView.setVisibility(View.VISIBLE);
-        // TODO add graphs and text to view
+        ChatAnalyzer chatAnalyzer = new ChatAnalyzer(
+                Chat.parseChat(
+                        expandableTextView.getText().toString(),
+                        settingsHandler.getDateTimePattern(),
+                        settingsHandler.getDateTimeLookAhead()
+                )
+        );
+        List<Chart<?>> charts = chartProvider.getAllCharts(chatAnalyzer);
+        // display the charts
+        charts.forEach(this::displayChart);
+        chartsYetToBeAnimated.addAll(charts);
+    }
+
+    private void displayChart(Chart<?> chart) {
+        // Make the description show up as Title above the chart
+        TextView title = new TextView(this);
+        title.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        title.setPadding(0, 40, 0, 20);
+        title.setText(chart.getDescription().getText());
+        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getInteger(R.integer.chart_title_text_size));
+        chart.getDescription().setEnabled(false);
+        resultsView.addView(title);
+        // add the chart to the resultsView
+        chart.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        resultsView.addView(chart);
+        chart.invalidate();
+        // Make the chart's width and height match that of the resultsView. To get resultsView's w&h,
+        // add runnable to the resultsView's layout queue, so that it will be executed only after
+        // resultView was rendered. Before being rendered, resultView's width and height will be 0.
+        resultsView.post(() -> {
+            chart.setMinimumWidth(resultsView.getWidth());
+            chart.setMinimumHeight(chart.getMinimumWidth());
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
