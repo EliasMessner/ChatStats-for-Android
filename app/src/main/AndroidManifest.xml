@@ -15,6 +15,15 @@
         android:theme="@style/Theme.ChatStats2"
         tools:targetApi="q">
         <activity
+            android:name=".ResultsActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.ChatStats2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"

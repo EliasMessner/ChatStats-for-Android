@@ -55,6 +55,21 @@ public class ChartProvider {
                 "",
                 context.getResources().getString(R.string.user_participation_by_words_title)
         ));
+        charts.add(getPieChart(
+                chatAnalyzer.getUserParticipationByWords(),
+                "",
+                context.getResources().getString(R.string.user_participation_by_words_title)
+        ));
+        charts.add(getPieChart(
+                chatAnalyzer.getUserParticipationByWords(),
+                "",
+                context.getResources().getString(R.string.user_participation_by_words_title)
+        ));
+        charts.add(getPieChart(
+                chatAnalyzer.getUserParticipationByWords(),
+                "",
+                context.getResources().getString(R.string.user_participation_by_words_title)
+        ));
         return charts;
     }
 
