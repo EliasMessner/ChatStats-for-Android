@@ -2,7 +2,10 @@ package com.example.chatstats2;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.os.Build;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.github.mikephil.charting.charts.Chart;
 
@@ -15,6 +18,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 public abstract class Util {
 
@@ -64,9 +71,32 @@ public abstract class Util {
         return text.replaceAll(punctuations, " ");
     }
     
-    public static int[] getLocationOnWindow(View view) {
+    public static int[] getLocationOnScreen(View view) {
         int[] outLocation = new int[2];
-        view.getLocationInWindow(outLocation);
+        view.getLocationOnScreen(outLocation);
         return outLocation;
+    }
+
+    public static String capitalizeFirstLowerRest(String input) {
+        if (input.length() <= 1) return input.toUpperCase();
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
+
+    /**
+     * Returns a new list of double values of the same length as the input list, where every value
+     * in the new list is the average of the values preceding and succeeding the same index of the
+     * original list (including the index itself).
+     * @param originalValues the original list
+     * @param range the amount of preceding and succeeding values to use for average.
+     * @return smoothed list
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static List<Double> smoothValues(ArrayList<Long> originalValues, int range) {
+        List<Double> smoothValues = new ArrayList<>();
+        for (int i = 0; i < originalValues.size() - 1; i++) {
+            double avg = originalValues.subList(Math.max(i-range, 0), Math.min(i+range, originalValues.size()-1)).stream().mapToLong(a -> a).average().orElse(0);
+            smoothValues.set(i, avg);
+        }
+        return smoothValues;
     }
 }

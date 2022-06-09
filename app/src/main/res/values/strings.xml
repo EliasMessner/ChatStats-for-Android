@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChatStats</string>
+    <string name="app_name">Chatistics</string>
     <string name="show_more">Show more…</string>
     <string name="show_results">Show Results!</string>
     <string name="show_less">Show less…</string>
@@ -63,6 +63,14 @@
     <!-- Chart Labels -->
     <string name="user_participation_by_messages_title">User Participation by Messages</string>
     <string name="user_participation_by_words_title">User Participation by Words</string>
+    <string name="user_participation_by_messages_value_selected_toast">%s has sent %d messages in total.</string>
+    <string name="user_participation_by_words_value_selected_toast">%s has sent %d words in total.</string>
+    <string name="message_count_per_hour_title">Message Count per Hour</string>
+    <string name="message_count_per_hour_value_selected_toast">%.0f%% of messages were sent at %s:00</string>
+    <string name="message_count_per_week_day_title">Message Count per Week Day</string>
+    <string name="message_count_per_week_day_value_selected_toast">%.0f%% of messages were sent on a %s</string>
+    <string name="message_count_per_date_title">Overall Activity Timeline</string>
+    <string name="message_count_per_date_value_selected_toast">%d messages were sent on %s.</string>
 
 
 </resources>

@@ -1,6 +1,6 @@
 package com.example.chatstats2;
 
-import static com.example.chatstats2.Util.getLocationOnWindow;
+import static com.example.chatstats2.Util.getLocationOnScreen;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -37,7 +37,7 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityResultsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.scrollView.getViewTreeObserver().addOnScrollChangedListener(this::onScrollChanged);
+        binding.scrollView.getViewTreeObserver().addOnScrollChangedListener(this::animateChartIfNeeded);
         chartsYetToBeAnimated = new ArrayList<>();
         settingsHandler = new SettingsHandler(this);
         chartProvider = new ChartProvider(this);
@@ -48,9 +48,10 @@ public class ResultsActivity extends AppCompatActivity {
         assert fileText != null;
         chat = Chat.parseChat(fileText, settingsHandler.getDateTimePattern(), settingsHandler.getDateTimeLookAhead());
         showResults();
+        binding.resultsView.postDelayed(this::animateChartIfNeeded, 500);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void showResults() {
         // create the charts
         ChatAnalyzer chatAnalyzer = new ChatAnalyzer(chat);
@@ -67,7 +68,7 @@ public class ResultsActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        title.setPadding(0, 40, 0, 20);
+        title.setPadding(0, 100, 0, 100);
         title.setText(chart.getDescription().getText());
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getInteger(R.integer.chart_title_text_size));
         chart.getDescription().setEnabled(false);
@@ -91,17 +92,19 @@ public class ResultsActivity extends AppCompatActivity {
     /**
      * Animate a chart when it appears on the screen for the first time.
      */
-    private void onScrollChanged() {
+    private void animateChartIfNeeded() {
         for (int i = 0; i < binding.resultsView.getChildCount(); i++) {
             View child = binding.resultsView.getChildAt(i);
             if (child instanceof Chart<?> && chartsYetToBeAnimated.contains((Chart<?>) child)) {
                 Chart<?> chart = (Chart<?>) child;
-                if (getLocationOnWindow(chart)[1] > binding.getRoot().getHeight()) continue;
+                if (getLocationOnScreen(chart)[1] > binding.scrollView.getHeight()) continue;
                 chartsYetToBeAnimated.remove(chart);
                 if (chart instanceof PieChart) {
-                    ((PieChart) chart).spin( getResources().getInteger(R.integer.animation_pie_chart_duration_millis),0,-360f, Easing.EaseInOutQuad);
+                    PieChart pieChart = ((PieChart) chart);
+                    pieChart.spin( getResources().getInteger(R.integer.animation_pie_chart_duration_millis), pieChart.getRotationAngle(),pieChart.getRotationAngle() - 360f, Easing.EaseInOutQuart);
                 } else if (chart instanceof BarChart) {
-                    chart.animateY(R.integer.animation_bar_chart_duration_millis);
+                    BarChart barChart = (BarChart) chart;
+                    barChart.animateY(getResources().getInteger(R.integer.animation_bar_chart_duration_millis));
                 }
             }
         }

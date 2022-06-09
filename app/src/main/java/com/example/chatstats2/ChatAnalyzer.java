@@ -3,13 +3,14 @@ package com.example.chatstats2;
 import static com.example.chatstats2.Util.wordTokenize;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 public class ChatAnalyzer {
@@ -21,8 +22,8 @@ public class ChatAnalyzer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Map<LocalDate, Long> getMessageCountPerDate() {
-        Map<LocalDate, Long> result = new HashMap<>();
+    public SortedMap<LocalDate, Long> getMessageCountPerDate() {
+        SortedMap<LocalDate, Long> result = new TreeMap<>();
         for (Message message : chat.getMessageList()) {
             result.merge(message.getDateTime().toLocalDate(), 1L, Long::sum);
         }
@@ -34,8 +35,8 @@ public class ChatAnalyzer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Map<DayOfWeek, Long> getMessageCountPerWeekDay() {
-        Map<DayOfWeek, Long> result = new HashMap<>();
+    public SortedMap<DayOfWeek, Long> getMessageCountPerWeekDay() {
+        SortedMap<DayOfWeek, Long> result = new TreeMap<>();
         for (Message message : chat.getMessageList()) {
             result.merge(message.getDateTime().getDayOfWeek(), 1L, Long::sum);
         }
@@ -46,8 +47,8 @@ public class ChatAnalyzer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Map<Integer, Long> getMessageCountPerHour() {
-        Map<Integer, Long> result = new HashMap<>();
+    public SortedMap<Integer, Long> getMessageCountPerHour() {
+        SortedMap<Integer, Long> result = new TreeMap<>();
         for (Message message : chat.getMessageList()) {
             result.merge(message.getDateTime().getHour(), 1L, Long::sum);
         }
@@ -58,18 +59,18 @@ public class ChatAnalyzer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Long> getUserParticipationByMessages() {
+    public SortedMap<String, Long> getUserParticipationByMessages() {
         return getUserParticipation(message -> 1);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Long> getUserParticipationByWords() {
+    public SortedMap<String, Long> getUserParticipationByWords() {
         return getUserParticipation(message -> wordTokenize(message.getContent()).length);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Long> getUserParticipation(Function<Message, Integer> op) {
-        Map<String, Long> result = new HashMap<>();
+    public SortedMap<String, Long> getUserParticipation(Function<Message, Integer> op) {
+        SortedMap<String, Long> result = new TreeMap<>();
         chat.getMessageList().forEach(message ->
                 result.merge(message.getSender(), (long) op.apply(message), Long::sum));
         return result;
