@@ -25,14 +25,14 @@ public class Message {
         String[] dateTimeStringAndRest = messageSegment.split(" - ", 2);
         if (dateTimeStringAndRest.length < 2)
             return null;
-        String dateString = dateTimeStringAndRest[0];
+        String dateTimeString = dateTimeStringAndRest[0].replaceAll(" ", " ");
         String[] senderAndContent = dateTimeStringAndRest[1].split(": ", 2);
         if (senderAndContent.length < 2)
             return null;
         String sender = senderAndContent[0];
         String content = senderAndContent[1];
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-        return new Message(LocalDateTime.parse(dateString, formatter), sender, content);
+        return new Message(LocalDateTime.parse(dateTimeString, formatter), sender, content);
     }
 
     public LocalDateTime getDateTime() {
