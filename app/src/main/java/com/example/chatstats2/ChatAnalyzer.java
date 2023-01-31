@@ -8,10 +8,18 @@ import androidx.annotation.RequiresApi;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Function;
+
+import kotlin.NotImplementedError;
 
 public class ChatAnalyzer {
 
@@ -73,6 +81,25 @@ public class ChatAnalyzer {
         SortedMap<String, Long> result = new TreeMap<>();
         chat.getMessageList().forEach(message ->
                 result.merge(message.getSender(), (long) op.apply(message), Long::sum));
+        return result;
+    }
+
+    /**
+     * Returns for each user a sorted frequency map of all used words.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, SortedMap<String, Long>> getWordCountsPerUser(List<String> stopWords) {
+        Map<String, SortedMap<String, Long>> result = new HashMap<>();
+        chat.getMessageList().forEach(message -> {
+            for (String word : wordTokenize(message.getContent())) {
+                if (stopWords.contains(word)) continue;
+                if (result.containsKey(message.getSender())) {
+                    result.get(message.getSender()).merge(word, 1L, Long::sum);
+                } else {
+                    result.put(message.getSender(), new TreeMap<>());
+                }
+            }
+        });
         return result;
     }
 
